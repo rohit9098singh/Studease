@@ -1,11 +1,58 @@
-import React from 'react'
+"use client"
 
-const CourseManagement = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+import { useState } from "react"
+import type { Course } from "@/types/admin"
+import CourseManagementHeader from "./components/CourseManagementHeader"
+import CourseStats from "./components/CourseStats"
+import CourseTable from "./components/CourseTable"
+
+export default function CourseManagement() {
+    const [courses, setCourses] = useState<Course[]>([
+        {
+            id: "1",
+            title: "React Fundamentals",
+            instructor: "John Doe",
+            students: 245,
+            duration: "8 weeks",
+            rating: 4.8,
+            status: "active",
+            price: 99,
+            category: "Web Development",
+            createdAt: "2024-01-15",
+        },
+        {
+            id: "2",
+            title: "Python for Data Science",
+            instructor: "Jane Smith",
+            students: 189,
+            duration: "12 weeks",
+            rating: 4.9,
+            status: "active",
+            price: 149,
+            category: "Data Science",
+            createdAt: "2024-01-10",
+        },
+        {
+            id: "3",
+            title: "UI/UX Design Principles",
+            instructor: "Mike Johnson",
+            students: 156,
+            duration: "6 weeks",
+            rating: 4.7,
+            status: "draft",
+            price: 79,
+            category: "Design",
+            createdAt: "2024-01-20",
+        },
+    ])
+
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+
+    return (
+        <div className="p-8">
+            <CourseManagementHeader onAddCourse={() => setIsAddDialogOpen(true)} />
+            <CourseStats />
+            <CourseTable courses={courses} />
+        </div>
+    )
 }
-
-export default CourseManagement

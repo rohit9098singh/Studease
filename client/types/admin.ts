@@ -8,3 +8,16 @@ export interface User {
   joinedAt: string
   lastActive: string
 }
+
+export interface Course {
+  id: string
+  title: string
+  instructor: string
+  students: number
+  duration: string
+  rating: number
+  status: "active" | "draft" | "archived"
+  price: number
+  category: string
+  createdAt: string
+}
