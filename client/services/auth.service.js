@@ -76,7 +76,7 @@ export const verifyAuth = async () => {
     const response = await axiosInstance.get("/api/v1/verify-auth");
     return response?.data;
   } catch (error) {
-    console.error(
+    console.log(
       "Verify Auth Error:",
       error.response?.data?.message || error.message
     );

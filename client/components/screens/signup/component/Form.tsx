@@ -1,5 +1,4 @@
 "use client"
-
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -12,7 +11,7 @@ import Link from "next/link"
 import { SignupFormData, signupSchema } from "./validation/signupSchema"
 import { CustomButton } from "@/components/custom/CustomButton/CustomButton"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import {registerUser} from "../../../../services/auth.service"
+import { registerUser } from "../../../../services/auth.service"
 
 export const SignupForm = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -34,11 +33,12 @@ export const SignupForm = () => {
     const onSubmit = async (data: SignupFormData) => {
         try {
             setIsLoading(true)
-            // const response = await signupUser(data)
-             const response = await registerUser(data);
-            console.log("signupdata", data)
-            toast.success("login successfull")
-            router.push("/login")
+            const response = await registerUser(data);
+            if (response?.success) {
+                console.log("signupdata", data)
+                toast.success("login successfull")
+                router.push("/login")
+            }
         } catch (error: any) {
             toast.error(" Signup failed:", error.response?.data?.message || error.message)
         } finally {
@@ -116,7 +116,7 @@ export const SignupForm = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-sm font-semibold text-gray-700">
-                                            Password 
+                                            Password
                                         </FormLabel>
                                         <FormControl>
                                             <div className="relative">

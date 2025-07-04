@@ -17,9 +17,11 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/',
-        '/login',
-        '/signup',
-        '/forget-password',
+        // '/',
+        // '/login',
+        // '/signup',
+        // '/forget-password',
     ]
 }
+
+
