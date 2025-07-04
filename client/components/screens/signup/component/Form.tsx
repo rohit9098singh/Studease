@@ -12,7 +12,7 @@ import Link from "next/link"
 import { SignupFormData, signupSchema } from "./validation/signupSchema"
 import { CustomButton } from "@/components/custom/CustomButton/CustomButton"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import {registerUser} from "../../../services/auth.service"
+import {registerUser} from "../../../../services/auth.service"
 
 export const SignupForm = () => {
     const [isLoading, setIsLoading] = useState(false);

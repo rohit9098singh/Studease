@@ -1,6 +1,5 @@
-"use client"
-
-import { CustomButton } from "@/components/custom/CustomButton/CustomButton"
+"use client";
+import { CustomButton } from "@/components/custom/CustomButton/CustomButton";
 import {
     Form,
     FormControl,
@@ -8,25 +7,23 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import {
-    type LoginFormData,
-    loginSchema,
-} from "./validation/loginSchema"
-import { Eye, EyeOff, Mail, Lock } from "lucide-react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { loginUser } from "@/components/services/auth.service"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { type LoginFormData, loginSchema } from "./validation/loginSchema";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginForm = () => {
     const [lookUpPass, setLookUpPass] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    const { login } = useAuth();
     const router = useRouter();
 
     const form = useForm<LoginFormData>({
@@ -36,44 +33,54 @@ const LoginForm = () => {
             password: "",
         },
         mode: "onChange",
-    })
+    });
 
     const onSubmit = async (data: LoginFormData) => {
         try {
-            setIsLoading(true)
-            const response = await loginUser(data)
-            toast.success("login successfull")
-            router.push("/")
+            setIsLoading(true);
+            const response = await login(data);
+            const role = response?.data?.role;
+            if (role === "user") {
+                toast.success("Login successful");
+                router.push("/user/home");
+            }
+             else if(role==="admin"){
+                toast.success("admin loggged in successfully");
+                router.push("/admin/home")
+             }
         } catch (error: any) {
-            toast.error("signup failed", error.response?.data?.message || error.message)
+            toast.error(
+                error?.response?.data?.message || error.message || "Login failed"
+            );
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
+
 
     const handleTogglePasswordCheck = () => {
-        setLookUpPass((prev) => !prev)
-    }
+        setLookUpPass((prev) => !prev);
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 px-4 py-8">
             <div className="w-full max-w-sm">
-                {/* Header */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">
                         Welcome Back
                     </h1>
-                    <p className="text-gray-600">Sign in to continue to your account</p>
+                    <p className="text-gray-600">
+                        Sign in to continue to your account
+                    </p>
                 </div>
 
-                {/* Form Container */}
                 <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-white/20">
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
                             className="space-y-6 w-full"
                         >
-                            {/* Email */}
+                            {/* Email Field */}
                             <FormField
                                 name="email"
                                 control={form.control}
@@ -101,7 +108,7 @@ const LoginForm = () => {
                                 )}
                             />
 
-                            {/* Password */}
+                            {/* Password Field */}
                             <FormField
                                 name="password"
                                 control={form.control}
@@ -137,6 +144,7 @@ const LoginForm = () => {
                                 )}
                             />
 
+                            {/* Forgot Password */}
                             <div className="flex justify-end">
                                 <Link
                                     href="/forgot-password"
@@ -146,6 +154,7 @@ const LoginForm = () => {
                                 </Link>
                             </div>
 
+                            {/* Submit Button */}
                             <div className="pt-2">
                                 <CustomButton
                                     content="Sign In"
@@ -156,21 +165,22 @@ const LoginForm = () => {
                         </form>
                     </Form>
 
+                    {/* Footer */}
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-600">
                             Don't have an account?{" "}
-                            <a
+                            <Link
                                 href="/signup"
                                 className="text-blue-600 hover:text-blue-700 font-semibold hover:underline transition-colors"
                             >
                                 Create one here
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;
