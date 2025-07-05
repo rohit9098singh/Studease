@@ -23,7 +23,9 @@ const Sidebar = ({ activeTab, setActiveTab }: AdminSidebarProps) => {
   const handleLogout=()=>{
       logout();
       toast.success("logout successfully done ");
-      router.push("/login")
+      setTimeout(() => {
+          router.push("/login")
+      }, 2000);
   }
 
   return (
@@ -58,7 +60,7 @@ const Sidebar = ({ activeTab, setActiveTab }: AdminSidebarProps) => {
 
       <div className="p-4 border-t border-gray-200">
         <button
-          onClick={() =>handleLogout}
+          onClick={handleLogout}
           className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-red-600 hover:bg-red-50 transition-colors"
         >
           <LogOut className="w-5 h-5" />

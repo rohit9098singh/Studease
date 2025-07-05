@@ -99,6 +99,7 @@ export const logout = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log(typeof email)
     const user = await User.findOne({ email });
     if (!user) {
       return response(res, 400, "No account found with this email");

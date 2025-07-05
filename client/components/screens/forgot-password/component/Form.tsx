@@ -16,6 +16,7 @@ import { useState } from "react";
 import { ForgotPasswordFormData, forgotPasswordSchema } from "./validation/forgotPasswordSchema";
 import { CustomButton } from "@/components/custom/CustomButton/CustomButton";
 import Link from "next/link";
+import { forgotPassword } from "@/services/auth.service";
 
 const ForgotPasswordForm = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -31,8 +32,10 @@ const ForgotPasswordForm = () => {
 	const onSubmit = async (data: ForgotPasswordFormData) => {
 		try {
 			setIsLoading(true);
-			// const response = await sendForgotPassword(data);
-			console.log(data)
+			const response = await forgotPassword(data.email);
+			if(response?.success){
+				console.log(data)
+			}
 		} catch (error: any) {
 			console.error(" Forgot password error:", error.response?.data?.message || error.message);
 		} finally {
