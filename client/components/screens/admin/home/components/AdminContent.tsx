@@ -1,7 +1,7 @@
 "use client"
 
 import CourseManagement from "../../CourseManagement/CourseManagement"
-import SettingsContent from "../../SettingsContent/SettingsContent"
+import Dashboard from "../../Dashboard/Dashboard"
 import StudentManagement from "../../StudentManagement/StudentManagement"
 // import Home from "../Home"
 
@@ -11,15 +11,13 @@ interface AdminContentProps {
 
 export default function AdminContent({ activeTab }: AdminContentProps) {
     switch (activeTab) {
-        // case "Home":
-        //     return <Home />
+         case "Home":
+            return <Dashboard />
         case "courses":
             return <CourseManagement />
         case "users":
             return <StudentManagement />
-        case "settings":
-            return <SettingsContent />
         default:
-            return <div className="p-4">Select a tab to view content</div>
+             return <Dashboard />
     }
 }

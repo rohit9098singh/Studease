@@ -31,7 +31,7 @@ export const logoutUser = async () => {
     const response = await axiosInstance.post("/api/v1/logout");
     return response.data;
   } catch (error) {
-    console.error(
+    console.log(
       "Logout Error:",
       error.response?.data?.message || error.message
     );
