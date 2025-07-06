@@ -4,47 +4,23 @@ import { useState } from "react"
 import UserManagementHeader from "./components/UserManagementHeader"
 import UserStats from "./components/UserStats"
 import UserTable from "./components/UserTable"
-import {User} from "@/types/admin"
+import { data } from "./components/data/data"
+const StudentManagement = () => {
+  const [users, setUsers] = useState(data)
+  const [searchText, setSearchText] = useState("");
+  const [filter, setFilter] = useState<"all" | "inactive" | "active">("all");
 
-const StudentManagement=()=> {
-  const [users, setUsers] = useState<User[]>([
-    {
-      id: "1",
-      name: "Alice Johnson",
-      email: "alice@example.com",
-      role: "student",
-      status: "active",
-      enrolledCourses: 3,
-      joinedAt: "2024-01-15",
-      lastActive: "2 hours ago",
-    },
-    {
-      id: "2",
-      name: "Bob Smith",
-      email: "bob@example.com",
-      role: "instructor",
-      status: "active",
-      enrolledCourses: 0,
-      joinedAt: "2024-01-10",
-      lastActive: "1 day ago",
-    },
-    {
-      id: "3",
-      name: "Carol Davis",
-      email: "carol@example.com",
-      role: "student",
-      status: "inactive",
-      enrolledCourses: 1,
-      joinedAt: "2024-01-20",
-      lastActive: "1 week ago",
-    },
-  ])
+  const filteredUser = users.filter((user) => {
+    const searchResult = user.name.toLowerCase().includes(searchText.toLowerCase()) || user.role.toLowerCase().includes(searchText.toLowerCase());
+    const filteredStatus = filter === "all" ? true : user.status === filter
+    return searchResult && filteredStatus
+  })
 
   return (
     <div className="p-8">
-      <UserManagementHeader />
+      <UserManagementHeader searchText={searchText} filter={filter} setSearchText={setSearchText} setFilter={setFilter} />
       <UserStats />
-      <UserTable users={users} />
+      <UserTable users={filteredUser} />
     </div>
   )
 }
