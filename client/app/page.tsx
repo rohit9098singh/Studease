@@ -1,8 +1,7 @@
+import { redirect } from 'next/navigation'
 
-export default function Home() {
-  return (
-    <div>
-          lms platform 
-    </div>
-  );
+const page = () => {
+  redirect("/login")
 }
+
+export default page
